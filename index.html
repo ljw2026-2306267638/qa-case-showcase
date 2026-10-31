@@ -72,6 +72,19 @@
   .role{background:var(--teal-soft);border:1px solid #bfe3e1;border-radius:12px;padding:16px 18px;font-size:15px}
   footer{color:var(--muted);font-size:13.5px;text-align:center;padding:10px 20px 30px}
   .note{font-size:13px;color:var(--muted);background:#fbfcfe;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin-top:14px}
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tablewrap table{min-width:520px}
+  .mobile-hint{display:none}
+  @media(max-width:600px){
+    .hero{padding:40px 16px 32px}
+    .hero h1{font-size:27px}
+    .hero h2{font-size:16.5px}
+    section{padding:20px 16px}
+    section > h3{font-size:19px}
+    th,td{padding:8px 9px}
+    .why{margin-left:8px;padding-left:22px}
+    .mobile-hint{display:inline}
+  }
   @media print{body{background:#fff}section{break-inside:avoid}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
@@ -186,9 +199,10 @@
       <span><span class="dot" style="background:#b7791f"></span>★ 根本原因所在维度</span>
       <span><span class="dot" style="background:#98a6ba"></span>经记录与现场证据核实后排除</span>
       <span>主鱼刺统一朝鱼尾倾斜，次要鱼刺（中骨）水平、与主干平行</span>
+      <span class="mobile-hint">· 手机上可左右滑动查看鱼骨图</span>
     </div>
 
-    <table style="margin-top:16px">
+    <div class="tablewrap"><table style="margin-top:16px">
       <tr><th>维度</th><th>核查内容</th><th>结论</th></tr>
       <tr><td>人</td><td>操作人员是否按规程执行、有无遗漏步骤</td><td><span class="tag tag-out">排除</span> 按现行规程操作，问题不在执行层</td></tr>
       <tr><td>料</td><td>上游物料、母液质量与投料记录</td><td><span class="tag tag-out">排除</span> 无异常</td></tr>
@@ -196,7 +210,7 @@
       <tr><td>机</td><td>压滤设备、氮气吹干系统运行与点检记录</td><td><span class="tag tag-out">排除</span> 运行正常</td></tr>
       <tr><td>环</td><td>车间温湿度等环境监控数据</td><td><span class="tag tag-out">排除</span> 受控范围内</td></tr>
       <tr><td>测</td><td>取样方式与纯度检测方法复核</td><td><span class="tag tag-out">排除</span> 结果可信</td></tr>
-    </table>
+    </table></div>
   </section>
 
   <!-- 5Why -->
@@ -236,7 +250,7 @@
     <div class="kicker">CAPA</div>
     <h3>CAPA：让同类问题不要再发生第二次</h3>
     <p class="sub">我跟踪 CAPA 1 项，按有效性验证流程逐项关账。</p>
-    <table>
+    <div class="tablewrap"><table>
       <tr><th style="width:150px">环节</th><th>措施</th><th style="width:230px">闭环方式</th></tr>
       <tr>
         <td><b>即时纠正</b><br>Correction</td>
@@ -258,7 +272,7 @@
         <td>跟踪后续批次执行情况，确认新要求被实际执行、同类纯度问题未重复出现。</td>
         <td>按流程逐项核对后关账</td>
       </tr>
-    </table>
+    </table></div>
     <div class="note">说明：以上为我在该调查中的参与工作复盘。案例细节已脱敏处理，不包含任何批号、项目编号、客户及同事信息。</div>
   </section>
 
