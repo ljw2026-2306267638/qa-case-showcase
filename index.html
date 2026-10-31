@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>李佳蔚 · QA 偏差调查案例 | 鱼骨图 · 5Why · CAPA</title>
+<meta name="description" content="李佳蔚 QA 工程师偏差调查案例展示：运用鱼骨图与 5Why 定位根本原因，推动 CAPA 闭环。案例已脱敏。">
+<style>
+  :root{
+    --ink:#17233b; --muted:#5b6b82; --line:#dbe3ee;
+    --navy:#0f2a4a; --teal:#0e7c7b; --teal-soft:#e6f4f3;
+    --amber:#b7791f; --amber-soft:#fdf3e0; --red:#b42318; --red-soft:#fdeeed;
+    --bg:#f6f8fb; --card:#ffffff; --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65}
+  a{color:var(--teal);text-decoration:none}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px 64px}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,var(--navy) 0%,#174a73 60%,var(--teal) 130%);color:#fff;padding:56px 20px 44px;margin-bottom:28px}
+  .hero-in{max-width:980px;margin:0 auto}
+  .eyebrow{font-size:13px;letter-spacing:.22em;opacity:.85;text-transform:uppercase}
+  .hero h1{font-size:34px;line-height:1.25;margin:12px 0 6px}
+  .hero h2{font-size:19px;font-weight:500;margin:0 0 18px;opacity:.95}
+  .hero p{max-width:720px;margin:0 0 20px;opacity:.92;font-size:15.5px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px}
+  .badge{border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:4px 12px;font-size:13px;background:rgba(255,255,255,.08)}
+  .badge strong{font-weight:600}
+
+  /* Layout */
+  section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px 28px 24px;margin-bottom:20px}
+  section > h3{margin:0 0 4px;font-size:22px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .kicker{font-size:12px;letter-spacing:.18em;color:var(--teal);font-weight:700;text-transform:uppercase}
+
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:760px){.grid4,.grid2{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.grid4,.grid2{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fbfcfe}
+  .card .num{font-size:12px;color:var(--teal);font-weight:700;letter-spacing:.12em}
+  .card h4{margin:6px 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .card.alert{background:var(--red-soft);border-color:#f3c6c2}
+  .card.root{background:var(--amber-soft);border-color:#ecd9ac}
+  .card.good{background:var(--teal-soft);border-color:#bfe3e1}
+
+  /* Fishbone */
+  .fishbone{overflow-x:auto;padding:8px 0 4px}
+  .fishbone svg{min-width:680px;width:100%;height:auto;display:block}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin-top:10px}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+  th{background:#f0f4f9;font-weight:600;white-space:nowrap}
+  .tag{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12.5px;font-weight:600}
+  .tag-out{background:#eef1f5;color:#5b6b82}
+  .tag-root{background:var(--amber-soft);color:var(--amber)}
+
+  /* 5Why */
+  .why{position:relative;margin-left:14px;padding-left:28px;border-left:2px dashed #b9c9dd}
+  .why-step{position:relative;margin-bottom:14px;background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .why-step::before{content:attr(data-n);position:absolute;left:-43px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .why-step b{color:var(--navy)}
+  .why-step p{margin:4px 0 0;color:var(--muted);font-size:14.5px}
+  .root-cause{background:var(--amber-soft);border:1.5px solid var(--amber);border-radius:12px;padding:16px 18px;margin-top:6px}
+  .root-cause b{color:var(--amber)}
+
+  ul.tight{margin:6px 0;padding-left:20px}
+  ul.tight li{margin-bottom:6px}
+  .role{background:var(--teal-soft);border:1px solid #bfe3e1;border-radius:12px;padding:16px 18px;font-size:15px}
+  footer{color:var(--muted);font-size:13.5px;text-align:center;padding:10px 20px 30px}
+  .note{font-size:13px;color:var(--muted);background:#fbfcfe;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin-top:14px}
+  @media print{body{background:#fff}section{break-inside:avoid}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="eyebrow">Quality Assurance · Case Study</div>
+    <h1>李佳蔚 Jiawei Li</h1>
+    <h2>QA 工程师 — 一次完整的偏差调查：从「纯度不合格」到 CAPA 闭环</h2>
+    <p>在 CDMO 小分子原料药 / 中间体生产质量工作中，我参与偏差与异常调查 2 起，实际运用<strong>鱼骨图</strong>与 <strong>5Why</strong> 定位根本原因、推动纠正措施落地，并跟踪 <strong>CAPA</strong> 1 项按有效性验证流程逐项关账。这一页，就是其中一例的完整复盘。</p>
+    <div class="badges">
+      <span class="badge">小分子 API / 中间体 CDMO 企业 · <strong>质量保证部 QA 工程师</strong></span>
+      <span class="badge">GMP 内审员</span>
+      <span class="badge">ISO 9001 审核员</span>
+      <span class="badge">ISO 13485 内审员</span>
+      <span class="badge">CET-6 · 516 ｜ IELTS 6.0</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 一图看懂 -->
+  <section>
+    <div class="kicker">Overview</div>
+    <h3>案例速览</h3>
+    <p class="sub">析晶 — 压滤工序偏差调查（案例已脱敏，不含批号、项目与客户信息）</p>
+    <div class="grid4">
+      <div class="card alert">
+        <div class="num">01 · 事件</div>
+        <h4>滤饼纯度不合格</h4>
+        <p>析晶压滤后，滤饼纯度检测不合格，触发偏差调查，并对该批次作二次析晶处理。</p>
+      </div>
+      <div class="card">
+        <div class="num">02 · 调查</div>
+        <h4>鱼骨图 + 5Why</h4>
+        <p>从人、机、料、法、环、测六个维度系统排查，再用 5Why 逐层追问，不凭经验下结论。</p>
+      </div>
+      <div class="card root">
+        <div class="num">03 · 根本原因</div>
+        <h4>规程缺陷</h4>
+        <p>主操作规程（MOR）未明确要求对滤饼裂缝进行平缝处理，母液残留经氮气吹干后杂质析出不均。</p>
+      </div>
+      <div class="card good">
+        <div class="num">04 · 闭环</div>
+        <h4>CAPA 逐项关账</h4>
+        <p>修订规程、举一反三排查、人员培训，按有效性验证流程跟踪关闭，降低重复性质量风险。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 鱼骨图 -->
+  <section>
+    <div class="kicker">Fishbone Diagram</div>
+    <h3>鱼骨图：先把可能性摆全，再逐项排除</h3>
+    <p class="sub">调查的第一步不是猜原因，而是沿 6M 维度把可能因素列全、用记录与现场证据逐项核实。每条主鱼刺上的次要鱼刺，标注的是该维度具体的核查点。</p>
+
+    <div class="fishbone" aria-label="鱼骨图">
+      <svg viewBox="0 0 1000 520" role="img">
+        <line x1="30" y1="260" x2="788" y2="260" stroke="#1a1a1a" stroke-width="4"/>
+        <polygon points="788,249 822,260 788,271" fill="#1a1a1a"/>
+        <rect x="830" y="192" width="162" height="136" rx="14" fill="#fdeeed" stroke="#d98a80" stroke-width="1.5"/>
+        <text x="911" y="246" font-size="17" font-weight="700" fill="#b42318" text-anchor="middle">滤饼纯度不合格</text>
+        <text x="911" y="276" font-size="12.5" fill="#b42318" text-anchor="middle">析晶 · 压滤工序</text>
+        <text x="911" y="298" font-size="12.5" fill="#b42318" text-anchor="middle">触发二次析晶处理</text>
+        <line x1="250" y1="260" x2="145" y2="90" stroke="#3a4452" stroke-width="2.8"/>
+        <line x1="210" y1="195" x2="288" y2="195" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="236" y="188" font-size="13.5" fill="#444c58">规程执行</text>
+        <line x1="179" y1="144" x2="257" y2="144" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="205" y="137" font-size="13.5" fill="#444c58">人员培训</text>
+        <text x="141" y="62" font-size="20" font-weight="700" fill="#3a4452" text-anchor="middle">人</text>
+        <text x="141" y="80" font-size="10.5" letter-spacing="1.5" fill="#8a94a6" text-anchor="middle">MAN</text>
+        <line x1="470" y1="260" x2="365" y2="90" stroke="#3a4452" stroke-width="2.8"/>
+        <line x1="430" y1="195" x2="508" y2="195" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="456" y="188" font-size="13.5" fill="#444c58">上游物料</text>
+        <line x1="399" y1="144" x2="477" y2="144" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="425" y="137" font-size="13.5" fill="#444c58">母液质量</text>
+        <text x="361" y="62" font-size="20" font-weight="700" fill="#3a4452" text-anchor="middle">料</text>
+        <text x="361" y="80" font-size="10.5" letter-spacing="1.5" fill="#8a94a6" text-anchor="middle">MATERIAL</text>
+        <line x1="690" y1="260" x2="585" y2="90" stroke="#c2701e" stroke-width="3.5"/>
+        <line x1="650" y1="195" x2="728" y2="195" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="676" y="188" font-size="13.5" fill="#444c58">裂缝平缝要求</text>
+        <line x1="619" y1="144" x2="697" y2="144" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="645" y="137" font-size="13.5" fill="#444c58">风险识别</text>
+        <text x="581" y="62" font-size="20" font-weight="700" fill="#c2701e" text-anchor="middle">法 ★</text>
+        <text x="581" y="80" font-size="10.5" letter-spacing="1.5" fill="#8a94a6" text-anchor="middle">METHOD</text>
+        <line x1="250" y1="260" x2="145" y2="430" stroke="#3a4452" stroke-width="2.8"/>
+        <line x1="210" y1="325" x2="288" y2="325" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="236" y="318" font-size="13.5" fill="#444c58">压滤机状态</text>
+        <line x1="179" y1="376" x2="257" y2="376" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="205" y="369" font-size="13.5" fill="#444c58">氮气系统</text>
+        <text x="141" y="460" font-size="20" font-weight="700" fill="#3a4452" text-anchor="middle">机</text>
+        <text x="141" y="478" font-size="10.5" letter-spacing="1.5" fill="#8a94a6" text-anchor="middle">MACHINE</text>
+        <line x1="470" y1="260" x2="365" y2="430" stroke="#3a4452" stroke-width="2.8"/>
+        <line x1="430" y1="325" x2="508" y2="325" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="456" y="318" font-size="13.5" fill="#444c58">温湿度记录</text>
+        <line x1="399" y1="376" x2="477" y2="376" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="425" y="369" font-size="13.5" fill="#444c58">环境监控</text>
+        <text x="361" y="460" font-size="20" font-weight="700" fill="#3a4452" text-anchor="middle">环</text>
+        <text x="361" y="478" font-size="10.5" letter-spacing="1.5" fill="#8a94a6" text-anchor="middle">ENVIRONMENT</text>
+        <line x1="690" y1="260" x2="585" y2="430" stroke="#3a4452" stroke-width="2.8"/>
+        <line x1="650" y1="325" x2="728" y2="325" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="676" y="318" font-size="13.5" fill="#444c58">取样点位</text>
+        <line x1="619" y1="376" x2="697" y2="376" stroke="#8a94a6" stroke-width="1.5"/>
+        <text x="645" y="369" font-size="13.5" fill="#444c58">检测方法</text>
+        <text x="581" y="460" font-size="20" font-weight="700" fill="#3a4452" text-anchor="middle">测</text>
+        <text x="581" y="478" font-size="10.5" letter-spacing="1.5" fill="#8a94a6" text-anchor="middle">MEASUREMENT</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:#b7791f"></span>★ 根本原因所在维度</span>
+      <span><span class="dot" style="background:#98a6ba"></span>经记录与现场证据核实后排除</span>
+      <span>主鱼刺统一朝鱼尾倾斜，次要鱼刺（中骨）水平、与主干平行</span>
+    </div>
+
+    <table style="margin-top:16px">
+      <tr><th>维度</th><th>核查内容</th><th>结论</th></tr>
+      <tr><td>人</td><td>操作人员是否按规程执行、有无遗漏步骤</td><td><span class="tag tag-out">排除</span> 按现行规程操作，问题不在执行层</td></tr>
+      <tr><td>料</td><td>上游物料、母液质量与投料记录</td><td><span class="tag tag-out">排除</span> 无异常</td></tr>
+      <tr><td>法</td><td>MOR 对压滤后滤饼状态处理的规定是否明确</td><td><span class="tag tag-root">根本原因</span> 未明确裂缝平缝要求</td></tr>
+      <tr><td>机</td><td>压滤设备、氮气吹干系统运行与点检记录</td><td><span class="tag tag-out">排除</span> 运行正常</td></tr>
+      <tr><td>环</td><td>车间温湿度等环境监控数据</td><td><span class="tag tag-out">排除</span> 受控范围内</td></tr>
+      <tr><td>测</td><td>取样方式与纯度检测方法复核</td><td><span class="tag tag-out">排除</span> 结果可信</td></tr>
+    </table>
+  </section>
+
+  <!-- 5Why -->
+  <section>
+    <div class="kicker">5 Why Analysis</div>
+    <h3>5Why：五次追问，从现象追到文件</h3>
+    <p class="sub">每一层都只问一个「为什么」，答案必须有现场或记录证据支撑。</p>
+    <div class="why">
+      <div class="why-step" data-n="1">
+        <b>为什么滤饼纯度不合格？</b>
+        <p>滤饼中残留杂质含量偏高，且分布不均。</p>
+      </div>
+      <div class="why-step" data-n="2">
+        <b>为什么杂质残留偏高、分布不均？</b>
+        <p>压滤后滤饼表面形成裂缝，洗涤与吹干不均匀，母液更多地残留在裂缝区域。</p>
+      </div>
+      <div class="why-step" data-n="3">
+        <b>为什么母液残留会变成杂质析出？</b>
+        <p>氮气吹干过程中，残留母液被吹干，其中溶解的杂质随之析出并沉积在滤饼上。</p>
+      </div>
+      <div class="why-step" data-n="4">
+        <b>为什么裂缝没有在压滤后被处理掉？</b>
+        <p>主操作规程（MOR）没有明确要求压滤后检查滤饼裂缝并进行平缝处理，操作人员无据可依。</p>
+      </div>
+      <div class="why-step" data-n="5">
+        <b>为什么规程里没有这一要求？</b>
+        <p>文件编制 / 修订时，未识别出「滤饼裂缝 → 洗涤不均 → 杂质析出」这一风险链条。</p>
+      </div>
+    </div>
+    <div class="root-cause">
+      <b>根本原因：</b>规程缺陷 —— MOR 未明确滤饼裂缝平缝要求，本质是文件编制阶段对该工序的风险识别不足。这不是「人没做好」，而是「文件没写清」，因此纠正的方向也应当落在文件与体系上。
+    </div>
+  </section>
+
+  <!-- CAPA -->
+  <section>
+    <div class="kicker">CAPA</div>
+    <h3>CAPA：让同类问题不要再发生第二次</h3>
+    <p class="sub">我跟踪 CAPA 1 项，按有效性验证流程逐项关账。</p>
+    <table>
+      <tr><th style="width:150px">环节</th><th>措施</th><th style="width:230px">闭环方式</th></tr>
+      <tr>
+        <td><b>即时纠正</b><br>Correction</td>
+        <td>对受影响批次作二次析晶处理，重新评估后再行判定；短期纠正措施先行落地，控制当下风险。</td>
+        <td>处理结果经复核确认</td>
+      </tr>
+      <tr>
+        <td><b>纠正措施</b><br>Corrective Action</td>
+        <td>修订 MOR：明确增加「压滤后检查滤饼裂缝并平缝」的步骤、操作要求与记录要求，使要求可执行、可追溯。</td>
+        <td>文件修订升版并生效</td>
+      </tr>
+      <tr>
+        <td><b>预防措施</b><br>Preventive Action</td>
+        <td>举一反三，排查同类析晶 / 压滤工序文件是否存在相同缺口；对相关操作与复核人员完成培训；将裂缝检查纳入现场复核要点。</td>
+        <td>排查清单与培训记录齐全</td>
+      </tr>
+      <tr>
+        <td><b>有效性验证</b><br>Effectiveness Check</td>
+        <td>跟踪后续批次执行情况，确认新要求被实际执行、同类纯度问题未重复出现。</td>
+        <td>按流程逐项核对后关账</td>
+      </tr>
+    </table>
+    <div class="note">说明：以上为我在该调查中的参与工作复盘。案例细节已脱敏处理，不包含任何批号、项目编号、客户及同事信息。</div>
+  </section>
+
+  <!-- 我的角色与其它 QA 工作 -->
+  <section>
+    <div class="kicker">My Role</div>
+    <h3>我在这件事里做了什么</h3>
+    <div class="role">
+      作为 QA 工程师<b>参与</b>该偏差调查：参与鱼骨图分析与 5Why 讨论、协助核查记录与现场证据定位根本原因，推动短期纠正措施落地，并负责跟踪这项 CAPA 直至按有效性验证流程逐项关账。
+    </div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="card">
+        <h4>文件修订</h4>
+        <p>独立修订与升级项目全生命周期质量文件（放大工艺、MOR、生产共线评估、清洁方案等），保证工艺文件与现行 GMP 要求的一致性与可追溯性。</p>
+      </div>
+      <div class="card">
+        <h4>现场监督与 CTQ 闭环</h4>
+        <p>现场监督与复核关键质量节点（CTQ）生产记录，推动所有 CTQ 记录闭环管理 —— 文件即证据，记录闭环才算工作闭环。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系 -->
+  <section>
+    <div class="kicker">Contact</div>
+    <h3>联系我</h3>
+    <p style="margin:0">李佳蔚 · 意向城市：天津 / 北京 / 上海 · 方向：质量保证（QA）/ 质量体系 / 商业质量<br>
+    E-mail：<a href="mailto:ljw71850@gmail.com">ljw71850@gmail.com</a></p>
+  </section>
+
+</div>
+
+<footer>
+  © 2026 李佳蔚 Jiawei Li · 本页为求职案例展示，案例内容已脱敏，不涉及前雇主保密信息。
+</footer>
+
+</body>
+</html>
