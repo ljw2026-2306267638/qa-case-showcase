@@ -85,12 +85,20 @@
     .why{margin-left:8px;padding-left:22px}
     .mobile-hint{display:inline}
   }
+  .hero{position:relative}
+  .lang-toggle{position:absolute;top:18px;right:20px;display:flex;border:1px solid rgba(255,255,255,.55);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12);z-index:5}
+  .lang-toggle button{appearance:none;border:0;background:transparent;color:#fff;font-size:13px;padding:5px 14px;cursor:pointer;font-family:inherit}
+  .lang-toggle button.active{background:#fff;color:#0f2a4a;font-weight:700}
   @media print{body{background:#fff}section{break-inside:avoid}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
 
 <header class="hero">
+  <div class="lang-toggle" role="group" aria-label="Language / 语言">
+    <button type="button" id="btn-zh" class="active">中文</button>
+    <button type="button" id="btn-en">EN</button>
+  </div>
   <div class="hero-in">
     <div class="eyebrow">Quality Assurance · Case Study</div>
     <h1>李佳蔚 Jiawei Li</h1>
@@ -307,6 +315,49 @@
   © 2026 李佳蔚 Jiawei Li · 本页为求职案例展示，案例内容已脱敏，不涉及前雇主保密信息。
 </footer>
 
+<script>
+(function(){
+  var EN = {"李佳蔚 · QA 偏差调查案例 | 鱼骨图 · 5Why · CAPA": "Jiawei Li · QA Deviation Investigation Case | Fishbone · 5Why · CAPA", "QA 工程师 — 一次完整的偏差调查：从「纯度不合格」到 CAPA 闭环": "QA Engineer — A Complete Deviation Investigation: From “Purity Failure” to CAPA Closure", "在 CDMO 小分子原料药 / 中间体生产质量工作中，我参与偏差与异常调查 2 起，实际运用": "In QA work for a CDMO producing small-molecule APIs and intermediates, I took part in 2 deviation and anomaly investigations, using ", "鱼骨图": "fishbone diagrams", "与": " and ", "定位根本原因、推动纠正措施落地，并跟踪": " to pinpoint root causes and drive corrective actions, and followed up ", "1 项按有效性验证流程逐项关账。这一页，就是其中一例的完整复盘。": " — 1 item, closed step by step following the effectiveness-check process. This page is a full recap of one of those cases.", "小分子 API / 中间体 CDMO 企业 ·": "Small-molecule API / Intermediate CDMO · ", "质量保证部 QA 工程师": "Quality Assurance Department, QA Engineer", "GMP 内审员": "GMP Internal Auditor", "ISO 9001 审核员": "ISO 9001 Auditor", "ISO 13485 内审员": "ISO 13485 Internal Auditor", "案例速览": "Case Overview", "鱼骨图 + 5Why": "Fishbone + 5Why", "析晶 — 压滤工序偏差调查（案例已脱敏，不含批号、项目与客户信息）": "Deviation investigation in crystallization–filtration (case de-identified; no batch numbers, projects or client information)", "01 · 事件": "01 · Incident", "滤饼纯度不合格": "Filter Cake Failed Purity Specification", "析晶压滤后，滤饼纯度检测不合格，触发偏差调查，并对该批次作二次析晶处理。": "After crystallization and filtration, the filter cake failed its purity test, triggering a deviation investigation; the batch was treated with a second crystallization.", "02 · 调查": "02 · Investigation", "从人、机、料、法、环、测六个维度系统排查，再用 5Why 逐层追问，不凭经验下结论。": "Systematically checked all six dimensions — Man, Machine, Material, Method, Environment, Measurement — then drilled down layer by layer with 5Why instead of jumping to conclusions.", "03 · 根本原因": "03 · Root Cause", "规程缺陷": "Deficient procedure", "主操作规程（MOR）未明确要求对滤饼裂缝进行平缝处理，母液残留经氮气吹干后杂质析出不均。": "The Master Operation Record (MOR) did not clearly require levelling cracks in the filter cake; residual mother liquor dried under nitrogen blowing and impurities precipitated unevenly.", "04 · 闭环": "04 · Closure", "CAPA 逐项关账": "CAPA Closed Item by Item", "修订规程、举一反三排查、人员培训，按有效性验证流程跟踪关闭，降低重复性质量风险。": "Procedure revised, similar processes screened, personnel trained, and closure tracked per the effectiveness-check process — reducing the risk of recurrence.", "鱼骨图：先把可能性摆全，再逐项排除": "Fishbone: Lay Out Every Possibility First, Then Rule Them Out One by One", "调查的第一步不是猜原因，而是沿 6M 维度把可能因素列全、用记录与现场证据逐项核实。每条主鱼刺上的次要鱼刺，标注的是该维度具体的核查点。": "The first step of an investigation is not guessing causes, but listing all possible factors along the 6M dimensions and verifying each against records and on-site evidence. The secondary bones on each main bone mark the specific points checked for that dimension.", "析晶 · 压滤工序": "Crystallization · Filtration", "触发二次析晶处理": "Second crystallization triggered", "规程执行": "Procedure compliance", "人员培训": "Personnel training", "人": "Man", "上游物料": "Upstream materials", "母液质量": "Mother liquor quality", "料": "Material", "裂缝平缝要求": "Crack-levelling requirement", "风险识别": "Risk identification", "法 ★": "Method ★", "压滤机状态": "Filter press condition", "氮气系统": "Nitrogen system", "机": "Machine", "温湿度记录": "Temperature & humidity records", "环境监控": "Environmental monitoring", "环": "Environment", "取样点位": "Sampling points", "检测方法": "Test method", "测": "Measurement", "★ 根本原因所在维度": "★ Dimension where the root cause lies", "经记录与现场证据核实后排除": "Ruled out after verification against records and on-site evidence", "手机上可左右滑动查看鱼骨图": "On mobile, swipe sideways to view the fishbone diagram", "维度": "Dimension", "核查内容": "What was checked", "结论": "Conclusion", "操作人员是否按规程执行、有无遗漏步骤": "Whether operators followed the procedure and missed any step", "排除": "Ruled out", "按现行规程操作，问题不在执行层": "Work was performed per the current procedure; the problem was not at execution level", "上游物料、母液质量与投料记录": "Upstream materials, mother liquor quality and charging records", "无异常": "No abnormality", "法": "Method", "MOR 对压滤后滤饼状态处理的规定是否明确": "Whether the MOR clearly specifies how to handle filter-cake condition after filtration", "根本原因": "Root cause", "未明确裂缝平缝要求": "No clear requirement to level filter-cake cracks", "压滤设备、氮气吹干系统运行与点检记录": "Filter press and nitrogen drying system operation and inspection records", "运行正常": "Operating normally", "车间温湿度等环境监控数据": "Environmental monitoring data such as workshop temperature and humidity", "受控范围内": "Within controlled limits", "取样方式与纯度检测方法复核": "Review of sampling practice and the purity test method", "结果可信": "Results reliable", "5Why：五次追问，从现象追到文件": "5Why: Five Questions, From Symptom Down to the Document", "每一层都只问一个「为什么」，答案必须有现场或记录证据支撑。": "Each layer asks one single “why”, and every answer must be backed by on-site or record evidence.", "为什么滤饼纯度不合格？": "Why did the filter cake fail the purity specification?", "滤饼中残留杂质含量偏高，且分布不均。": "Residual impurities in the filter cake were too high and unevenly distributed.", "为什么杂质残留偏高、分布不均？": "Why were residual impurities high and uneven?", "压滤后滤饼表面形成裂缝，洗涤与吹干不均匀，母液更多地残留在裂缝区域。": "Cracks formed on the filter-cake surface after filtration, making washing and drying uneven; more mother liquor remained in the cracked areas.", "为什么母液残留会变成杂质析出？": "Why did residual mother liquor turn into precipitated impurities?", "氮气吹干过程中，残留母液被吹干，其中溶解的杂质随之析出并沉积在滤饼上。": "During nitrogen blow-drying, the residual mother liquor dried out and the impurities dissolved in it precipitated and deposited onto the filter cake.", "为什么裂缝没有在压滤后被处理掉？": "Why were the cracks not dealt with right after filtration?", "主操作规程（MOR）没有明确要求压滤后检查滤饼裂缝并进行平缝处理，操作人员无据可依。": "The Master Operation Record (MOR) did not clearly require checking the filter cake for cracks and levelling them after filtration, so operators had no instruction to follow.", "为什么规程里没有这一要求？": "Why was there no such requirement in the procedure?", "文件编制 / 修订时，未识别出「滤饼裂缝 → 洗涤不均 → 杂质析出」这一风险链条。": "When the document was drafted / revised, the risk chain “filter-cake cracks → uneven washing → impurity precipitation” had not been identified.", "根本原因：": "Root cause:", "规程缺陷 —— MOR 未明确滤饼裂缝平缝要求，本质是文件编制阶段对该工序的风险识别不足。这不是「人没做好」，而是「文件没写清」，因此纠正的方向也应当落在文件与体系上。": "A deficient procedure — the MOR did not clearly require levelling filter-cake cracks; at root, the risk of this step was under-identified when the document was prepared. This was not “people doing it wrong”, but “the document not spelling it out” — so the fix had to land on the document and the system.", "CAPA：让同类问题不要再发生第二次": "CAPA: Making Sure It Does Not Happen a Second Time", "我跟踪 CAPA 1 项，按有效性验证流程逐项关账。": "I followed up 1 CAPA item and closed it step by step per the effectiveness-check process.", "环节": "Stage", "措施": "Actions", "闭环方式": "How closure was confirmed", "即时纠正": "Immediate Correction", "Correction": "", "对受影响批次作二次析晶处理，重新评估后再行判定；短期纠正措施先行落地，控制当下风险。": "The affected batch was treated with a second crystallization and re-evaluated before disposition; short-term corrective actions were put in place first to control the immediate risk.", "处理结果经复核确认": "Treatment outcome reviewed and confirmed", "纠正措施": "Corrective Action", "Corrective Action": "", "修订 MOR：明确增加「压滤后检查滤饼裂缝并平缝」的步骤、操作要求与记录要求，使要求可执行、可追溯。": "MOR revised: a step for “checking the filter cake for cracks and levelling them” was added, with operating and recording requirements, making the requirement executable and traceable.", "文件修订升版并生效": "Document revised, upgraded and put into effect", "预防措施": "Preventive Action", "Preventive Action": "", "举一反三，排查同类析晶 / 压滤工序文件是否存在相同缺口；对相关操作与复核人员完成培训；将裂缝检查纳入现场复核要点。": "Lessons applied across the board: similar crystallization / filtration procedures were screened for the same gap; operators and reviewers were trained; crack checking was added to on-site review points.", "排查清单与培训记录齐全": "Screening checklist and training records complete", "有效性验证": "Effectiveness Check", "Effectiveness Check": "", "跟踪后续批次执行情况，确认新要求被实际执行、同类纯度问题未重复出现。": "Subsequent batches were tracked to confirm the new requirement was actually implemented and the same purity problem did not recur.", "按流程逐项核对后关账": "Checked item by item per process, then closed", "说明：以上为我在该调查中的参与工作复盘。案例细节已脱敏处理，不包含任何批号、项目编号、客户及同事信息。": "Note: The above is a recap of my participation in this investigation. Case details have been de-identified and contain no batch numbers, project numbers, client or colleague information.", "我在这件事里做了什么": "What I Did in This Case", "作为 QA 工程师": "As a QA engineer, I ", "参与": "participated in", "该偏差调查：参与鱼骨图分析与 5Why 讨论、协助核查记录与现场证据定位根本原因，推动短期纠正措施落地，并负责跟踪这项 CAPA 直至按有效性验证流程逐项关账。": " this deviation investigation: I joined the fishbone analysis and 5Why discussions, helped verify records and on-site evidence to pinpoint the root cause, drove the short-term corrective actions, and followed up this CAPA until it was closed item by item per the effectiveness-check process.", "文件修订": "Document Revision", "独立修订与升级项目全生命周期质量文件（放大工艺、MOR、生产共线评估、清洁方案等），保证工艺文件与现行 GMP 要求的一致性与可追溯性。": "Independently revised and upgraded quality documents across the project lifecycle (scale-up process, MOR, production line-sharing assessment, cleaning protocols, etc.), keeping process documents consistent with current GMP requirements and traceable.", "现场监督与 CTQ 闭环": "On-Site Oversight & CTQ Closure", "现场监督与复核关键质量节点（CTQ）生产记录，推动所有 CTQ 记录闭环管理 —— 文件即证据，记录闭环才算工作闭环。": "Supervised on site and reviewed production records at critical quality points (CTQ), driving all CTQ records to closure — documents are evidence, and work is only closed when the records are closed.", "联系我": "Contact Me", "详细联系方式请参考个人简历": "For detailed contact information, please refer to my resume", "© 2026 李佳蔚 Jiawei Li · 本页为求职案例展示，案例内容已脱敏，不涉及前雇主保密信息。": "© 2026 Jiawei Li · This page is a job-application case showcase; all case content is de-identified and involves no confidential information of the former employer."};
+  var nodes = [], originals = [];
+  var walker = document.createTreeWalker(document, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(n){
+      if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p = n.parentNode;
+      while(p){
+        if(p.nodeName === 'SCRIPT' || p.nodeName === 'STYLE') return NodeFilter.FILTER_REJECT;
+        if(p.classList && p.classList.contains('lang-toggle')) return NodeFilter.FILTER_REJECT;
+        p = p.parentNode;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  while(walker.nextNode()){ nodes.push(walker.currentNode); }
+  originals = nodes.map(function(n){ return n.nodeValue; });
+  function setLang(lang){
+    nodes.forEach(function(n, i){
+      if(lang === 'en'){
+        var core = originals[i].trim();
+        if(Object.prototype.hasOwnProperty.call(EN, core)){
+          n.nodeValue = originals[i].replace(core, EN[core]);
+        } else {
+          n.nodeValue = originals[i];
+        }
+      } else {
+        n.nodeValue = originals[i];
+      }
+    });
+    document.documentElement.lang = (lang === 'en') ? 'en' : 'zh-CN';
+    document.getElementById('btn-zh').classList.toggle('active', lang !== 'en');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    try{ localStorage.setItem('qa-case-lang', lang); }catch(e){}
+  }
+  document.getElementById('btn-zh').addEventListener('click', function(){ setLang('zh'); });
+  document.getElementById('btn-en').addEventListener('click', function(){ setLang('en'); });
+  var saved = 'zh';
+  try{ saved = localStorage.getItem('qa-case-lang') || 'zh'; }catch(e){}
+  if(saved === 'en') setLang('en');
+})();
+</script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b2a5a0c545284461b99ccd6f6c1577ec"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
